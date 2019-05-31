@@ -8,12 +8,13 @@ class LogBuilder {
         String measurement = MyProperty.getMeasurement();
         createMap(array);
         String timestamp0 = String.format("%06d", endTime);
+
         String result = measurement
                 + ",label=" + getLabel()
                 + ",responseCode=" + getResponseCode()
                 + ",success=" + getSuccess()
-                + "" + getFailureMessage()
-                + " responseTime=" + getElapsed()
+                + " " + getFailureMessage()
+                + "responseTime=" + getElapsed()
                 + ",failure=" + getFailure()
                 + ",bytes=" + getBytes()
                 + ",sentBytes=" + getSentBytes()

@@ -8,7 +8,7 @@ import java.util.HashMap;
     static void createMap (String[] array) {
         logString.put("timeStamp", array[0]);
         logString.put("elapsed", replaceInt(array[1]));
-        logString.put("label", replaceString(array[2]));
+        logString.put("label", validLabel(replaceString(array[2])));
         logString.put("responseCode", replaceString(array[3]));
         logString.put("responseMessage", replaceString(array[4]));
         logString.put("success", array[7]);
@@ -31,9 +31,13 @@ import java.util.HashMap;
         if (s.equals("null") || s.isEmpty()) s = "0";
         return s;
     }
+    private static String validLabel(String s) {
+        if (s.length() == 0) return "Label\\\\ does`t\\\\ exist";
+        else return s;
+    }
     private static void createFailureMessage() {
-        if (!getFailureMessage().equals("") && !getFailureMessage().equals("true")) {
-            setFailureMessage(",responseMessage=" + getFailureMessage() + getResponseMessage());
+        if (!getFailureMessage().equals("") || getSuccess().equals("false")) {
+            setFailureMessage("responseMessage=\"" + getFailureMessage() + getResponseMessage() + "\",");
             setSuccess("false");
             setFailure("1");
             if (getResponseCode().equals("")) setResponseCode("520");

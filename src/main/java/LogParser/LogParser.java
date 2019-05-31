@@ -9,6 +9,7 @@ import DB.LogSender;
 
 public class LogParser {
     public static void read() {
+        StringBuilder saveTimeStamp = new StringBuilder("0");
         String logFile = MyProperty.getLogFile();
         int fileLimit = 1;
         int timeRandom = 0;
@@ -27,6 +28,11 @@ public class LogParser {
                     line = line.replaceAll("\".*?(,).*?\"", s);
                 }
                 String[] array = line.split(",");
+                if (!array[0].equals("0")) {
+                    saveTimeStamp.setLength(0);
+                    saveTimeStamp.append(array[0]);
+                }
+                else array[0] = saveTimeStamp.toString();
                 result.append(LogBuilder.build(array, timeRandom));
                 timeRandom++;
                 fileLimit++;
