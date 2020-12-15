@@ -14,8 +14,9 @@ public class LogParser {
         int fileLimit = 1;
         int timeRandom = 0;
         try(BufferedReader reader = new BufferedReader(new FileReader(logFile), 2048)) {
-            //noinspection unused
-            String ignoreHeader = reader.readLine();
+
+            reader.readLine();
+
             StringBuilder result = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -24,7 +25,9 @@ public class LogParser {
                     String s = "";
                     Pattern p = Pattern.compile("\".*?(,).*?\"");
                     Matcher m = p.matcher(line);
-                    while (m.find()) s = m.group().replace(",", "");
+                    while (m.find()) {
+                        s = m.group().replace(",", "");
+                    }
                     line = line.replaceAll("\".*?(,).*?\"", s);
                 }
                 String[] array = line.split(",");
@@ -32,7 +35,9 @@ public class LogParser {
                     saveTimeStamp.setLength(0);
                     saveTimeStamp.append(array[0]);
                 }
-                else array[0] = saveTimeStamp.toString();
+                else {
+                    array[0] = saveTimeStamp.toString();
+                }
                 result.append(LogBuilder.build(array, timeRandom));
                 timeRandom++;
                 fileLimit++;
@@ -41,7 +46,9 @@ public class LogParser {
                     result.setLength(0);
                     fileLimit = 1;
                 }
-                if (timeRandom == 999999) timeRandom = 0;
+                if (timeRandom == 999999) {
+                    timeRandom = 0;
+                }
             }
             LogSender.send(result, true);
         }
